@@ -1,5 +1,12 @@
 const express = require("express");
 const mysql = require("mysql");
+var bodyParser = require("body-parser");
+
+const app = express();
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded());
+app.use(bodyParser.urlencoded({ extended: true }));
+
 const db = mysql.createConnection({
   host: "localhost",
   user: "root",
@@ -14,16 +21,16 @@ db.connect(err => {
   console.log("MySql Connected");
 });
 
-const app = express();
+// app.get("/createdb", (req, res) => {
+//   let sql = "CREATE DATABASE instance_shop";
+//   db.query(sql, (err, result) => {
+//     if (err) throw err;
+//     console.log(result);
+//     res.send("Database created");
+//   });
+// });
 
-app.get("/createdb", (req, res) => {
-  let sql = "CREATE DATABASE instance_shop";
-  db.query(sql, (err, result) => {
-    if (err) throw err;
-    console.log(result);
-    res.send("Database created");
-  });
-});
+app.use("/api/customer", require("./routes/api/customer")(db));
 
 const port = process.env.PORT || 5002;
 
