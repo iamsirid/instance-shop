@@ -31,6 +31,7 @@ db.connect(err => {
 // });
 
 app.use("/api/customer", require("./routes/api/customer")(db));
+app.use("/api/product", require("./routes/api/product")(db));
 
 const port = process.env.PORT || 5002;
 
