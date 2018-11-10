@@ -1,39 +1,69 @@
 import React, { Component } from "react";
+import { connect } from "react-redux";
+import * as actionTypes from "../store/actions";
 
 class Login extends Component {
+  // onLoginClick = () => {
+  //   console.log("onLoginClick");
+  //   this.props.onLogin();
+  // };
+  state = {
+    loginInput: ""
+  };
+  onLoginInputChanged = e => {
+    console.log(e.target.value);
+    this.setState({ loginInput: e.target.value });
+  };
   render() {
+    let loginInfo = null;
+    if (this.props.reduxState.isLogin) {
+      loginInfo = <h1>Login as {this.props.reduxState.ssn}</h1>;
+    }
     return (
-      <form>
+      <React.Fragment>
         <div className="form-group">
-          <label for="exampleInputEmail1">Email address</label>
+          <label for="loginInput">SSN</label>
           <input
-            type="email"
             className="form-control"
-            id="exampleInputEmail1"
-            aria-describedby="emailHelp"
-            placeholder="Enter email"
+            id="loginInput"
+            placeholder="Enter SSN"
+            onChange={this.onLoginInputChanged}
           />
-          <small id="emailHelp" className="form-text text-muted">
-            We'll never share your email with anyone else.
-          </small>
         </div>
-
-        <div className="form-check">
-          <input
-            type="checkbox"
-            className="form-check-input"
-            id="exampleCheck1"
-          />
-          <label className="form-check-label" for="exampleCheck1">
-            Check me out
-          </label>
-        </div>
-        <button type="submit" className="btn btn-primary">
-          Submit
+        <button
+          onClick={() => this.props.onLogin(this.state.loginInput)}
+          className="btn btn-primary"
+        >
+          Login
         </button>
-      </form>
+        <button onClick={this.props.onLogout} className="btn btn-primary">
+          Logout
+        </button>
+
+        {loginInfo}
+      </React.Fragment>
     );
   }
 }
 
-export default Login;
+const mapStateToProps = state => {
+  return {
+    reduxState: state
+  };
+};
+
+const mapDispatchToProps = dispatch => {
+  return {
+    onLogin: ssn =>
+      dispatch({
+        type: actionTypes.LOGIN,
+        ssn: ssn
+      }),
+    onLogout: () => dispatch({ type: actionTypes.LOGOUT })
+  };
+};
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Login);
