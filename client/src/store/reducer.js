@@ -13,7 +13,7 @@ const reducer = (state = initialState, action) => {
         ...state,
         isLogin: true,
         ssn: action.ssn,
-        role: "Seller"
+        role: action.role
       };
     case actionTypes.LOGOUT:
       return {

@@ -5,22 +5,23 @@ import axios from "axios";
 
 class Login extends Component {
   state = {
-    loginInput: "",
-    loginError: null
+    ssn: "",
+    loginError: null,
+    selectedRole: "seller"
   };
 
   onLoginClick = () => {
     console.log("onLoginClick");
-    if (!this.state.loginInput) return;
+    if (!this.state.ssn) return;
     const data = {
-      ssn: this.state.loginInput,
-      role: "seller"
+      ssn: this.state.ssn,
+      role: this.state.selectedRole
     };
     axios
-      .post("/api/login", data)
+      .post(`/api/login/`, data)
       .then(response => {
         console.log(response.data);
-        this.props.doLogin(this.state.loginInput);
+        this.props.doLogin(data.ssn, data.role);
         this.setState({ loginError: null });
       })
       .catch(err => {
@@ -30,9 +31,14 @@ class Login extends Component {
 
     // this.props.doLogin(this.state.loginInput);
   };
-  onLoginInputChanged = e => {
-    console.log(e.target.value);
-    this.setState({ loginInput: e.target.value });
+  // onLoginInputChanged = e => {
+  //   console.log(e.target.value);
+  //   this.setState({ loginInput: e.target.value });
+  // };
+  onChange = e => {
+    let nState = { [e.target.name]: e.target.value };
+
+    this.setState(nState);
   };
 
   render() {
@@ -47,12 +53,24 @@ class Login extends Component {
     return (
       <React.Fragment>
         <div className="form-group">
+          <label for="roleSelect">Login as</label>
+          <select
+            name="selectedRole"
+            id="roleSelect"
+            className="form-control form-control-sm"
+            value={this.state.selectedRole}
+            onChange={this.onChange}
+          >
+            <option value="seller">Seller</option>
+            <option value="customer">Customer</option>
+          </select>
           <label for="loginInput">SSN</label>
           <input
+            name="ssn"
             className="form-control"
             id="loginInput"
             placeholder="Enter SSN"
-            onChange={this.onLoginInputChanged}
+            onChange={this.onChange}
           />
         </div>
         <button onClick={this.onLoginClick} className="btn btn-primary">
@@ -77,10 +95,11 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    doLogin: ssn =>
+    doLogin: (ssn, role) =>
       dispatch({
         type: actionTypes.LOGIN,
-        ssn: ssn
+        ssn: ssn,
+        role: role
       }),
     doLogout: () => dispatch({ type: actionTypes.LOGOUT })
   };

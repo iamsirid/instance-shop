@@ -31,7 +31,7 @@ class Login extends Component {
   };
 
   render() {
-    return (
+    return this.props.reduxState.role == "seller" ? (
       <div className="row mt-3">
         <div className="card col-lg-12">
           <div className="card-body">
@@ -109,7 +109,7 @@ class Login extends Component {
           </div>
         </div>
       </div>
-    );
+    ) : null;
   }
 }
 

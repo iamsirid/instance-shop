@@ -1,7 +1,39 @@
 import React, { Component } from "react";
-
+import { connect } from "react-redux";
 class Navbar extends Component {
   render() {
+    let rightMenu = null;
+    if (this.props.reduxState.isLogin) {
+      rightMenu = (
+        <React.Fragment>
+          <li className="nav-item">
+            <span className="nav-link">
+              {this.props.reduxState.role}: {this.props.reduxState.ssn}
+            </span>
+          </li>
+          <li className="nav-item">
+            <a className="nav-link" href="#">
+              Logout
+            </a>
+          </li>
+        </React.Fragment>
+      );
+    } else {
+      rightMenu = (
+        <React.Fragment>
+          <li className="nav-item">
+            <a className="nav-link" href="#">
+              Login
+            </a>
+          </li>
+          <li className="nav-item">
+            <a className="nav-link" href="#">
+              Register
+            </a>
+          </li>
+        </React.Fragment>
+      );
+    }
     return (
       <nav className="navbar navbar-expand-lg navbar-light bg-light">
         <a className="navbar-brand" href="#">
@@ -42,22 +74,20 @@ class Navbar extends Component {
               </a>
             </li>
           </ul>
-          <ul className="navbar-nav mr-right">
-            <li className="nav-item">
-              <a className="nav-link" href="#">
-                Login
-              </a>
-            </li>
-            <li className="nav-item">
-              <a className="nav-link" href="#">
-                Register
-              </a>
-            </li>
-          </ul>
+          <ul className="navbar-nav mr-right">{rightMenu}</ul>
         </div>
       </nav>
     );
   }
 }
 
-export default Navbar;
+const mapStateToProps = state => {
+  return {
+    reduxState: state
+  };
+};
+
+export default connect(
+  mapStateToProps,
+  null
+)(Navbar);
