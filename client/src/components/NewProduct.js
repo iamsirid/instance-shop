@@ -119,18 +119,7 @@ const mapStateToProps = state => {
   };
 };
 
-const mapDispatchToProps = dispatch => {
-  return {
-    doLogin: ssn =>
-      dispatch({
-        type: actionTypes.LOGIN,
-        ssn: ssn
-      }),
-    doLogout: () => dispatch({ type: actionTypes.LOGOUT })
-  };
-};
-
 export default connect(
   mapStateToProps,
-  mapDispatchToProps
+  null
 )(Login);
