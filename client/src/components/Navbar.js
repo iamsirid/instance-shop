@@ -7,9 +7,9 @@ class Navbar extends Component {
       rightMenu = (
         <React.Fragment>
           <li className="nav-item">
-            <span className="nav-link">
-              {this.props.reduxState.role}: {this.props.reduxState.ssn}
-            </span>
+            <a className="nav-link" href="#">
+              {this.props.reduxState.name}
+            </a>
           </li>
           <li className="nav-item">
             <a className="nav-link" href="#">

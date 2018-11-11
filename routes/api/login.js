@@ -6,7 +6,9 @@ module.exports = db => {
   router.post("/", (req, res) => {
     let loginInfo = req.body;
 
-    let sql = `SELECT ssn FROM ${loginInfo.role} WHERE ssn = ${loginInfo.ssn}`;
+    let sql = `SELECT ssn,name FROM ${loginInfo.role} WHERE ssn = ${
+      loginInfo.ssn
+    }`;
     let query = db.query(sql, (err, result) => {
       if (err) {
         res.status(404).json(err);

@@ -3,7 +3,8 @@ import * as actionTypes from "./actions";
 const initialState = {
   isLogin: false,
   ssn: "",
-  role: ""
+  role: "",
+  name: ""
 };
 
 const reducer = (state = initialState, action) => {
@@ -13,14 +14,16 @@ const reducer = (state = initialState, action) => {
         ...state,
         isLogin: true,
         ssn: action.ssn,
-        role: action.role
+        role: action.role,
+        name: action.name
       };
     case actionTypes.LOGOUT:
       return {
         ...state,
         isLogin: false,
         ssn: "",
-        role: ""
+        role: "",
+        name: ""
       };
     default:
   }

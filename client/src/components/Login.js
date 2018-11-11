@@ -21,10 +21,11 @@ class Login extends Component {
       .post(`/api/login/`, data)
       .then(response => {
         console.log(response.data);
-        this.props.doLogin(data.ssn, data.role);
+        this.props.doLogin(data.ssn, data.role, response.data.name);
         this.setState({ loginError: null });
       })
       .catch(err => {
+        // console.log(err);
         console.log(err.response.data);
         this.setState({ loginError: err.response.data.errMsg });
       });
@@ -95,11 +96,12 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    doLogin: (ssn, role) =>
+    doLogin: (ssn, role, name) =>
       dispatch({
         type: actionTypes.LOGIN,
         ssn: ssn,
-        role: role
+        role: role,
+        name: name
       }),
     doLogout: () => dispatch({ type: actionTypes.LOGOUT })
   };
