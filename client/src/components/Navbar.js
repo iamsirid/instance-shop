@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
+import * as actionTypes from "../store/actions";
 class Navbar extends Component {
   render() {
     let rightMenu = null;
@@ -12,7 +13,7 @@ class Navbar extends Component {
             </a>
           </li>
           <li className="nav-item">
-            <a className="nav-link" href="#">
+            <a className="nav-link" onClick={this.props.doLogout}>
               Logout
             </a>
           </li>
@@ -87,7 +88,13 @@ const mapStateToProps = state => {
   };
 };
 
+const mapDispatchToProps = dispatch => {
+  return {
+    doLogout: () => dispatch({ type: actionTypes.LOGOUT })
+  };
+};
+
 export default connect(
   mapStateToProps,
-  null
+  mapDispatchToProps
 )(Navbar);
