@@ -51,7 +51,7 @@ class Login extends Component {
     if (this.state.loginError) {
       loginErrorShow = <h1>{this.state.loginError}</h1>;
     }
-    return (
+    return this.props.reduxState.isLogin ? null : (
       <React.Fragment>
         <div className="form-group">
           <label for="roleSelect">Login as</label>
