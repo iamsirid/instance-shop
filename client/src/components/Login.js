@@ -77,9 +77,9 @@ class Login extends Component {
         <button onClick={this.onLoginClick} className="btn btn-primary">
           Login
         </button>
-        <button onClick={this.props.doLogout} className="btn btn-primary">
+        {/* <button onClick={this.props.doLogout} className="btn btn-primary">
           Logout
-        </button>
+        </button> */}
 
         {loginInfo}
         {loginErrorShow}
