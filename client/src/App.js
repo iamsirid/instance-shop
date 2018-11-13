@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import "./App.css";
 import Navbar from "./components/Navbar";
 import Login from "./components/Login";
+import Register from "./components/Register";
 import NewProduct from "./components/NewProduct";
 
 class App extends Component {
@@ -13,6 +14,8 @@ class App extends Component {
         </header>
         <div className="container">
           <Login />
+          <Register />
+
           <NewProduct />
         </div>
       </div>
