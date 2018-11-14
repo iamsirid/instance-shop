@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
+import { NavLink } from "react-router-dom";
 import * as actionTypes from "../store/actions";
 class Navbar extends Component {
   render() {
@@ -23,14 +24,20 @@ class Navbar extends Component {
       rightMenu = (
         <React.Fragment>
           <li className="nav-item">
-            <a className="nav-link" href="#">
+            {/* <a className="nav-link" href="#">
               Login
-            </a>
+            </a> */}
+            <NavLink className="nav-link" exact to="/login">
+              Login
+            </NavLink>
           </li>
           <li className="nav-item">
-            <a className="nav-link" href="#">
+            {/* <a className="nav-link" href="#">
               Register
-            </a>
+            </a> */}
+            <NavLink className="nav-link" exact to="/register">
+              Register
+            </NavLink>
           </li>
         </React.Fragment>
       );
@@ -55,9 +62,9 @@ class Navbar extends Component {
         <div className="collapse navbar-collapse" id="navbarSupportedContent">
           <ul className="navbar-nav mr-auto">
             <li className="nav-item active">
-              <a className="nav-link" href="#">
-                Home <span className="sr-only">(current)</span>
-              </a>
+              <NavLink className="nav-link" exact to="/">
+                Home
+              </NavLink>
             </li>
             <li className="nav-item">
               <a className="nav-link" href="#">

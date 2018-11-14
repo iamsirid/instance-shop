@@ -1,64 +1,159 @@
 const express = require("express");
-
+const walletM = require("../../utils/walletDataManage");
 const router = express.Router();
 module.exports = db => {
+  // router.post("/create", (req, res) => {
+  //   const createCustomerControlWallet = (customerSsn, walletId) => {
+  //     let data = { customer_ssn: customerSsn, wallet_id: walletId }; // ?? wallet_id
+  //     let sql = "INSERT INTO customer_controls_wallet SET ?";
+  //     db.query(sql, data, (err, result) => {
+  //       if (err) {
+  //         console.log(err);
+  //         res.send(err);
+  //         return;
+  //       }
+  //       console.log(result);
+  //       res.send("Customer created...");
+  //     });
+  //   };
+  //   const getWalletID = customerSsn => {
+  //     let sql = "SELECT DISTINCT LAST_INSERT_ID() as wallet_id FROM wallet ";
+  //     db.query(sql, (err, result) => {
+  //       if (err) {
+  //         console.log(err);
+  //         res.send(err);
+  //         return;
+  //       }
+  //       console.log("====================");
+  //       console.log(result);
+  //       // console.log(result[0].wallet_id);
+  //       createCustomerControlWallet(customerSsn, result[0].wallet_id);
+  //     });
+  //   };
+
+  //   const createWallet = customerSsn => {
+  //     // let wallet = { customer_ssn: customerSsn };
+  //     let sql = "INSERT INTO wallet SET value = 0";
+  //     db.query(sql, (err, result) => {
+  //       if (err) {
+  //         console.log(err);
+  //         res.send(err);
+  //         return;
+  //       }
+  //       console.log(result);
+
+  //       // createCustomerControlWallet(customerSsn);
+  //       getWalletID(customerSsn);
+  //     });
+  //   };
+
+  //   let customer = req.body;
+  //   let sql = "INSERT INTO customer SET ?";
+  //   let query = db.query(sql, customer, (err, result) => {
+  //     if (err) {
+  //       // if (err.code === "ER_DUP_ENTRY") {
+  //       //   res.send("SSN or Email is used.");
+  //       //   return;
+  //       // }
+  //       res.send(err);
+  //       // throw err;
+  //       return;
+  //     }
+  //     console.log(result);
+  //     createWallet(req.body.ssn);
+  //   });
+  // });
   router.post("/create", (req, res) => {
-    const createCart = customerSsn => {
-      let cart = { customer_ssn: customerSsn };
-      let sql = "INSERT INTO cart SET ?";
-      db.query(sql, cart, (err, result) => {
+    const createCustomer = walletId => {
+      let customer = {
+        ssn: req.body.ssn,
+        name: req.body.name,
+        tel: req.body.tel,
+        email: req.body.email,
+        gender: req.body.gender,
+        address: req.body.address,
+        wallet_id: walletId
+      };
+      let sql = "INSERT INTO customer SET ?";
+      let query = db.query(sql, customer, (err, result) => {
         if (err) {
+          console.log(err);
           res.send(err);
           return;
         }
         console.log(result);
+        res.send("Customer created...");
       });
     };
-
-    const createWallet = customerSsn => {
-      let wallet = { customer_ssn: customerSsn };
-      let sql = "INSERT INTO wallet SET ?";
-      db.query(sql, wallet, (err, result) => {
-        if (err) {
-          res.send(err);
-          return;
-        }
-        console.log(result);
-        createCart(customerSsn);
-      });
-    };
-
-    let customer = req.body;
-    let sql = "INSERT INTO customer SET ?";
-    let query = db.query(sql, customer, (err, result) => {
-      if (err) {
-        // if (err.code === "ER_DUP_ENTRY") {
-        //   res.send("SSN or Email is used.");
-        //   return;
-        // }
-        res.send(err);
-        // throw err;
-        return;
-      }
-      console.log(result);
-      createWallet(req.body.ssn);
-      res.send("Customer created...");
-    });
+    walletM.createWallet(db, createCustomer);
   });
 
   router.delete("/delete/:ssn", (req, res) => {
+    // const deleteWallet = walletId => {
+    //   let sql = `DELETE FROM wallet WHERE wallet_id = "${walletId}"`;
+    //   let query = db.query(sql, (err, result) => {
+    //     if (err) {
+    //       console.log(err);
+    //       res.send(err);
+    //       return;
+    //     }
+    //     console.log(result);
+    //     res.send("customer deleted...");
+    //   });
+    // };
+
     let ssn = req.params.ssn;
-    let sql = `DELETE FROM customer WHERE ssn = "${ssn}"`;
+    let sql = `SELECT wallet_id FROM customer WHERE ssn = "${ssn}"`;
     let query = db.query(sql, (err, result) => {
       if (err) {
         res.send(err);
         return;
       }
       console.log(result);
-
-      res.send("customer deleted...");
+      walletM.deleteWallet(db, result[0].wallet_id, () =>
+        res.send("customer deleted...")
+      );
+      // res.send("customer deleted...");
     });
   });
+  // router.delete("/delete/:ssn", (req, res) => {
+  //   const deleteWallet = walletId => {
+  //     let sql = `DELETE FROM wallet WHERE wallet_id = "${walletId}"`;
+  //     let query = db.query(sql, (err, result) => {
+  //       if (err) {
+  //         console.log(err);
+  //         res.send(err);
+  //         return;
+  //       }
+  //       console.log(result);
+  //       res.send("customer deleted...");
+  //     });
+  //   };
+  //   const getCustomerWallet = ssn => {
+  //     let sql = `SELECT wallet_id FROM customer_controls_wallet WHERE customer_ssn = "${ssn}"`;
+  //     let query = db.query(sql, (err, result) => {
+  //       if (err) {
+  //         console.log(err);
+  //         res.send(err);
+  //         return;
+  //       }
+  //       console.log(result);
+  //       deleteWallet(result[0].wallet_id);
+  //     });
+  //   };
+
+  //   let ssn = req.params.ssn;
+  //   let sql = `DELETE FROM customer WHERE ssn = "${ssn}"`;
+  //   let query = db.query(sql, (err, result) => {
+  //     if (err) {
+  //       res.send(err);
+  //       return;
+  //     }
+  //     console.log(result);
+  //     getCustomerWallet(ssn);
+  //     // res.send("customer deleted...");
+  //   });
+  // });
   router.post("/login/", (req, res) => {
     let cEmail = req.body.email;
     let sql = `SELECT name,email FROM customer WHERE email = "${cEmail}"`;
