@@ -42,6 +42,16 @@ class Navbar extends Component {
         </React.Fragment>
       );
     }
+    let newProductMenu = null;
+    if (this.props.reduxState.role === "seller") {
+      newProductMenu = (
+        <li className="nav-item">
+          <NavLink className="nav-link" exact to="/new-product">
+            New Product
+          </NavLink>
+        </li>
+      );
+    }
     return (
       <nav className="navbar navbar-expand-lg navbar-light bg-light">
         <a className="navbar-brand" href="#">
@@ -81,6 +91,7 @@ class Navbar extends Component {
                 Wallet
               </a>
             </li>
+            {newProductMenu}
           </ul>
           <ul className="navbar-nav mr-right">{rightMenu}</ul>
         </div>

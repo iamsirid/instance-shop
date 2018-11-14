@@ -31,15 +31,25 @@ class Register extends Component {
   render() {
     let gender = (
       <div className="form-group">
-        <label for="genderInput">Gender</label>
-        <input
+        <label for="genderSelect">Gender</label>
+        {/* <input
           name="gender"
           type="text"
           className="form-control"
           id="genderInput"
           placeholder="Enter gender"
           onChange={this.onChange}
-        />
+        /> */}
+        <select
+          name="gender"
+          id="genderSelect"
+          className="form-control form-control-sm"
+          v
+          onChange={this.onChange}
+        >
+          <option value="M">Male</option>
+          <option value="F">Female</option>
+        </select>
       </div>
     );
     let address = (

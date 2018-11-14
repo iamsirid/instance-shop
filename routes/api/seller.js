@@ -40,6 +40,18 @@ module.exports = db => {
       );
     });
   });
+  router.get("/:ssn", (req, res) => {
+    let ssn = req.params.ssn;
+    let sql = `SELECT * FROM seller WHERE ssn = "${ssn}"`;
+    let query = db.query(sql, (err, result) => {
+      if (err) {
+        res.send(err);
+        return;
+      }
+      console.log(result);
+      res.json(result[0]);
+    });
+  });
 
   return router;
 };
