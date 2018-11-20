@@ -14,9 +14,9 @@ class ProductCards extends Component {
       })
       .catch(err => console.log(err));
   };
-  componentDidUpdate = () => {
-    this.getAllProduct();
-  };
+  // componentDidUpdate = () => {
+  //   this.getAllProduct();
+  // };
   componentDidMount = () => {
     this.getAllProduct();
   };
@@ -27,6 +27,7 @@ class ProductCards extends Component {
     );
     productList = productList.map(product => (
       <ProductCard
+        key={product.product_id}
         name={product.name}
         pictureUrl={product.pictureUrl}
         price={product.price}

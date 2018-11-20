@@ -34,6 +34,7 @@ app.use("/api/customer", require("./routes/api/customer")(db));
 app.use("/api/product", require("./routes/api/product")(db));
 app.use("/api/seller", require("./routes/api/seller")(db));
 app.use("/api/login", require("./routes/api/login")(db));
+app.use("/api/productItem", require("./routes/api/productItem")(db));
 
 const port = process.env.PORT || 5002;
 

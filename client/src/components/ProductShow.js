@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { connect } from "react-redux";
 import axios from "axios";
 
 class ProductShow extends Component {
@@ -20,7 +21,8 @@ class ProductShow extends Component {
       email: null,
       address: null,
       wallet_id: null
-    }
+    },
+    amount: 0
   };
   componentDidMount = () => {
     const {
@@ -44,7 +46,90 @@ class ProductShow extends Component {
       })
       .catch(err => console.log(err));
   };
+  onAmountChange = e => {
+    this.setState({ amount: e.target.value });
+  };
+  onAddToCart = () => {
+    const data = {
+      amount: this.state.amount,
+      product_id: this.state.data.product_id,
+      customer_ssn: this.props.reduxState.ssn
+    };
+    const createProductItem = () => {
+      axios
+        .post(`/api/productItem/create`, data)
+        .then(response => {
+          console.log(response.data);
+        })
+        .catch(err => {
+          console.log(err.response.data);
+        });
+    };
+    const removeDuplicateProductItem = productItemId => {
+      axios
+        .delete(`/api/productItem/delete/${productItemId}`)
+        .then(response => {
+          console.log(response.data);
+          createProductItem();
+        })
+        .catch(err => {
+          console.log(err);
+          console.log(err.response.data);
+        });
+    };
+
+    axios
+      .get(`/api/productItem/${this.props.reduxState.ssn}`)
+      .then(res => {
+        let productItemList = res.data;
+        let productItemId = null;
+        let isAlreadyInCart = productItemList.some(productItem => {
+          if (productItem.product_id === data.product_id) {
+            productItemId = productItem.product_item_id;
+            return true;
+          }
+          return false;
+        });
+        console.log("isAlreadyInCart: " + isAlreadyInCart);
+        if (isAlreadyInCart) removeDuplicateProductItem(productItemId);
+        else createProductItem();
+      })
+      .catch(err => console.log(err));
+  };
   render() {
+    let addToCart = null;
+    if (this.props.reduxState.role === "customer") {
+      addToCart = (
+        <React.Fragment>
+          <hr />
+          <p className="text-left">Buy This Product</p>
+          <div className="input-group mb-3">
+            <div className="input-group-prepend">
+              <span className="input-group-text" id="basic-addon1">
+                Amout
+              </span>
+            </div>
+            <input
+              name="amount"
+              type="text"
+              className="form-control"
+              onChange={this.onAmountChange}
+            />
+          </div>
+          <div className="input-group mb-3">
+            <div className="input-group-append">
+              <button
+                className="btn btn-outline-secondary"
+                type="button"
+                onClick={this.onAddToCart}
+              >
+                Add to cart
+              </button>
+            </div>
+          </div>
+        </React.Fragment>
+      );
+    }
     return (
       <React.Fragment>
         <div className="row mt-5">
@@ -69,32 +154,12 @@ class ProductShow extends Component {
                   ฿{this.state.data.price}
                 </h3>
                 <p className="text-left">
+                  Category : {this.state.data.category}
+                </p>
+                <p className="text-left">
                   Description : {this.state.data.description}
                 </p>
-                <p className="text-left">Amount</p>
-                <div className="input-group mb-3 float-right">
-                  <select className="custom-select" id="inputGroupSelect02">
-                    <option selected>Choose...</option>
-                    <option value="1">1</option>
-                    <option value="2">2</option>
-                    <option value="3">3</option>
-                  </select>
-                  <div className="input-group-append">
-                    <label
-                      className="input-group-text"
-                      for="inputGroupSelect02"
-                    >
-                      Amount
-                    </label>
-                  </div>
-                </div>
-                <div className="input-group mb-3">
-                  <div className="input-group-append">
-                    <button className="btn btn-outline-secondary" type="button">
-                      Add to cart
-                    </button>
-                  </div>
-                </div>
+                {addToCart}
               </div>
             </div>
             <div className="card mt-1">
@@ -122,4 +187,13 @@ class ProductShow extends Component {
     );
   }
 }
-export default ProductShow;
+const mapStateToProps = state => {
+  return {
+    reduxState: state
+  };
+};
+
+export default connect(
+  mapStateToProps,
+  null
+)(ProductShow);

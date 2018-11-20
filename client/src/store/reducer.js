@@ -1,11 +1,17 @@
 import * as actionTypes from "./actions";
 
 const initialState = {
-  isLogin: false,
-  ssn: "",
-  role: "",
-  name: ""
+  isLogin: true,
+  ssn: "1106702419878",
+  role: "customer",
+  name: "Rit"
 };
+// const initialState = {
+//   isLogin: false,
+//   ssn: "",
+//   role: "",
+//   name: ""
+// };
 
 const reducer = (state = initialState, action) => {
   switch (action.type) {

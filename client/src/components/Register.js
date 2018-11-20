@@ -47,6 +47,7 @@ class Register extends Component {
           v
           onChange={this.onChange}
         >
+          <option value="U"> </option>
           <option value="M">Male</option>
           <option value="F">Female</option>
         </select>

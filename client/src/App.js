@@ -7,6 +7,7 @@ import Register from "./components/Register";
 import NewProduct from "./components/NewProduct";
 import ProductShow from "./components/ProductShow";
 import ProductCards from "./components/ProductCards";
+import Cart from "./components/Cart";
 
 class App extends Component {
   render() {
@@ -22,6 +23,7 @@ class App extends Component {
             <Route exact path="/new-product" component={NewProduct} />
             <Route path="/product/:id" component={ProductShow} />
             <Route exact path="/" component={ProductCards} />
+            <Route exact path="/cart" component={Cart} />
           </div>
         </div>
       </BrowserRouter>
