@@ -11,6 +11,7 @@ class Cart extends Component {
     // productItemPriceList: []
   };
   // productItemRefList = [];
+
   getAllProductItem = () => {
     axios
       .get(`/api/productItem/${this.props.reduxState.ssn}`)
@@ -45,13 +46,66 @@ class Cart extends Component {
 
   onCheckout = () => {
     const data = { customer_ssn: this.props.reduxState.ssn };
+    const sellerGetPay = () => {
+      const paySeller = (ssn, value) => {
+        const data = {
+          value: value
+        };
+        axios
+          .post(`/api/seller/${ssn}/receivePayment`, data)
+          .then(response => {
+            console.log(response.data);
+
+            this.getAllProductItem();
+          })
+          .catch(err => {
+            console.log(err);
+            console.log(err.response.data);
+          });
+      };
+      const getSellerSsn = (productId, value) => {
+        axios
+          .get(`/api/product/${productId}`)
+          .then(res => {
+            console.log(res.data);
+
+            paySeller(res.data.seller_ssn, value);
+          })
+          .catch(err => console.log(err));
+      };
+      let productItemList = [...this.state.productItemList];
+      productItemList.forEach(e => {
+        if (e.price != null) {
+          getSellerSsn(e.product_id, e.price);
+        }
+      });
+    };
+    const customerPay = () => {
+      const data = {
+        value: this.state.totalPrice
+      };
+      axios
+        .post(`/api/customer/${this.props.reduxState.ssn}/pay`, data)
+        .then(response => {
+          console.log(response.data);
+          // this.setState(this.state);
+          // this.forceUpdate();
+          this.getAllProductItem();
+        })
+        .catch(err => {
+          console.log(err);
+          console.log(err.response.data);
+        });
+    };
     axios
       .post("/api/order/create", data)
       .then(response => {
         console.log(response.data);
         // this.setState(this.state);
         // this.forceUpdate();
-        this.getAllProductItem();
+        // this.getAllProductItem();
+        customerPay();
+        sellerGetPay();
       })
       .catch(err => {
         console.log(err);

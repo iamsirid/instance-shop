@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import axios from "axios";
+import { withRouter } from "react-router-dom";
 
 class ProductShow extends Component {
   state = {
@@ -96,8 +97,21 @@ class ProductShow extends Component {
       })
       .catch(err => console.log(err));
   };
+  onDeleteProduct = () => {
+    axios
+      .delete(`/api/product/delete/${this.state.data.product_id}`)
+      .then(response => {
+        console.log(response.data);
+        this.props.history.push("/");
+      })
+      .catch(err => {
+        console.log(err);
+        console.log(err.response.data);
+      });
+  };
   render() {
     let addToCart = null;
+    let deleteProduct = null;
     if (this.props.reduxState.role === "customer") {
       addToCart = (
         <React.Fragment>
@@ -129,6 +143,23 @@ class ProductShow extends Component {
           </div>
         </React.Fragment>
       );
+    } else if (
+      this.props.reduxState.role === "seller" &&
+      this.props.reduxState.ssn === this.state.sellerInfo.ssn
+    ) {
+      deleteProduct = (
+        <div className="input-group mb-3">
+          <div className="input-group-append">
+            <button
+              className="btn btn-danger"
+              type="button"
+              onClick={this.onDeleteProduct}
+            >
+              Delete
+            </button>
+          </div>
+        </div>
+      );
     }
     return (
       <React.Fragment>
@@ -157,9 +188,14 @@ class ProductShow extends Component {
                   Category : {this.state.data.category}
                 </p>
                 <p className="text-left">
+                  In Stock :
+                  <h3 className="text-success">{this.state.data.stock}</h3>
+                </p>
+                <p className="text-left">
                   Description : {this.state.data.description}
                 </p>
                 {addToCart}
+                {deleteProduct}
               </div>
             </div>
             <div className="card mt-1">
@@ -176,13 +212,13 @@ class ProductShow extends Component {
             </div>
           </div>
         </div>
-        <div className="row mt-1">
+        {/* <div className="row mt-1">
           <div className="card col-lg-12">
             <div className="card-body">
               <h2 className="text-left mb-3">Review</h2>
             </div>
           </div>
-        </div>
+        </div> */}
       </React.Fragment>
     );
   }
@@ -193,7 +229,9 @@ const mapStateToProps = state => {
   };
 };
 
-export default connect(
-  mapStateToProps,
-  null
-)(ProductShow);
+export default withRouter(
+  connect(
+    mapStateToProps,
+    null
+  )(ProductShow)
+);

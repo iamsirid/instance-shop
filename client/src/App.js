@@ -8,6 +8,8 @@ import NewProduct from "./components/NewProduct";
 import ProductShow from "./components/ProductShow";
 import ProductCards from "./components/ProductCards";
 import Cart from "./components/Cart";
+import Profile from "./components/Profile";
+// import Wallet from "./components/Wallet";
 
 class App extends Component {
   render() {
@@ -24,6 +26,8 @@ class App extends Component {
             <Route path="/product/:id" component={ProductShow} />
             <Route exact path="/" component={ProductCards} />
             <Route exact path="/cart" component={Cart} />
+            <Route exact path="/profile" component={Profile} />
+            {/* <Route exact path="/wallet/" component={Wallet} /> */}
           </div>
         </div>
       </BrowserRouter>

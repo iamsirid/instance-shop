@@ -56,19 +56,19 @@ module.exports = db => {
   //   }
   // });
 
-  //   router.delete("/delete/:ssn", (req, res) => {
-  //     let ssn = req.params.ssn;
-  //     let sql = `DELETE FROM customer WHERE ssn = "${ssn}"`;
-  //     let query = db.query(sql, (err, result) => {
-  //       if (err) {
-  //         res.send(err);
-  //         return;
-  //       }
-  //       console.log(result);
+  router.delete("/delete/:id", (req, res) => {
+    let id = req.params.id;
+    let sql = `DELETE FROM product WHERE product_id = "${id}"`;
+    let query = db.query(sql, (err, result) => {
+      if (err) {
+        res.send(err);
+        return;
+      }
+      console.log(result);
 
-  //       res.send("customer deleted...");
-  //     });
-  //   });
+      res.send("product deleted...");
+    });
+  });
   //   router.post("/login/", (req, res) => {
   //     let cEmail = req.body.email;
   //     let sql = `SELECT name,email FROM customer WHERE email = "${cEmail}"`;

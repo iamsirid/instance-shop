@@ -53,5 +53,74 @@ module.exports = db => {
     });
   });
 
+  router.put("/:ssn", (req, res) => {
+    let ssn = req.params.ssn;
+    let seller = {
+      name: req.body.name,
+      tel: req.body.tel,
+      email: req.body.email,
+      address: req.body.address
+    };
+    let sql = `UPDATE seller SET ? WHERE ssn = "${ssn}"`;
+    let query = db.query(sql, seller, (err, result) => {
+      if (err) {
+        res.send(err);
+        return;
+      }
+      console.log(result);
+      res.json(result[0]);
+    });
+  });
+
+  router.get("/:ssn/wallet", (req, res) => {
+    const getWallet = walletId => {
+      let sql = `SELECT * FROM wallet WHERE wallet_id = "${walletId}"`;
+      let query = db.query(sql, (err, result) => {
+        if (err) {
+          res.send(err);
+          return;
+        }
+        console.log(result);
+        res.json(result[0]);
+      });
+    };
+    let ssn = req.params.ssn;
+    let sql = `SELECT wallet_id FROM seller WHERE ssn = "${ssn}"`;
+    let query = db.query(sql, (err, result) => {
+      if (err) {
+        res.send(err);
+        return;
+      }
+      console.log(result);
+      getWallet(result[0].wallet_id);
+    });
+  });
+
+  router.post("/:ssn/receivePayment", (req, res) => {
+    let ssn = req.params.ssn;
+    const updateWallet = walletId => {
+      const value = req.body.value;
+
+      let sql = `UPDATE wallet SET value = value + ${value} WHERE wallet_id = "${walletId}"`;
+      let query = db.query(sql, (err, result) => {
+        if (err) {
+          res.send(err);
+          return;
+        }
+        console.log(result);
+        res.json(result);
+      });
+    };
+    let sql = `SELECT wallet_id FROM seller WHERE ssn = "${ssn}"`;
+    let query = db.query(sql, (err, result) => {
+      if (err) {
+        res.send(err);
+        return;
+      }
+      console.log(result);
+      updateWallet(result[0].wallet_id);
+    });
+  });
+
   return router;
 };

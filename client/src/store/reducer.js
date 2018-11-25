@@ -1,17 +1,17 @@
 import * as actionTypes from "./actions";
 
-const initialState = {
-  isLogin: true,
-  ssn: "1106702419878",
-  role: "customer",
-  name: "Rit"
-};
 // const initialState = {
-//   isLogin: false,
-//   ssn: "",
-//   role: "",
-//   name: ""
+//   isLogin: true,
+//   ssn: "1106702419878",
+//   role: "customer",
+//   name: "Rit"
 // };
+const initialState = {
+  isLogin: false,
+  ssn: "",
+  role: "",
+  name: ""
+};
 
 const reducer = (state = initialState, action) => {
   switch (action.type) {
@@ -30,6 +30,12 @@ const reducer = (state = initialState, action) => {
         ssn: "",
         role: "",
         name: ""
+      };
+    case actionTypes.CHANGE_NAME:
+      return {
+        ...state,
+
+        name: action.name
       };
     default:
   }

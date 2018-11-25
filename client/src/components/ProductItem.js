@@ -20,6 +20,7 @@ class ProductItem extends Component {
     orderId: null,
     totalItemPrice: null
   };
+
   updatePriceToCart = () => {
     this.props.updateTotalPrice({
       id: this.state.productItemId,
@@ -97,7 +98,7 @@ class ProductItem extends Component {
             name="amount"
             type="number"
             className="form-control"
-            id="exampleInputEmail1"
+            disabled={true}
             value={this.state.amount}
             onChange={this.onChange}
           />

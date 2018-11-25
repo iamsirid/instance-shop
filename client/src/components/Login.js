@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import * as actionTypes from "../store/actions";
 import axios from "axios";
+import { withRouter } from "react-router-dom";
 
 class Login extends Component {
   state = {
@@ -22,7 +23,9 @@ class Login extends Component {
       .then(response => {
         console.log(response.data);
         this.props.doLogin(data.ssn, data.role, response.data.name);
-        this.setState({ loginError: null });
+        // this.setState({ loginError: null });
+        console.log("Login!!");
+        this.props.history.push("/");
       })
       .catch(err => {
         // console.log(err);
@@ -107,7 +110,9 @@ const mapDispatchToProps = dispatch => {
   };
 };
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(Login);
+export default withRouter(
+  connect(
+    mapStateToProps,
+    mapDispatchToProps
+  )(Login)
+);

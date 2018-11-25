@@ -48,8 +48,8 @@ class Register extends Component {
           onChange={this.onChange}
         >
           <option value="U"> </option>
-          <option value="M">Male</option>
-          <option value="F">Female</option>
+          <option value="m">Male</option>
+          <option value="f">Female</option>
         </select>
       </div>
     );
@@ -130,7 +130,7 @@ class Register extends Component {
                 />
               </div>
               <div className="form-group">
-                <label for="priceInput">Tel</label>
+                <label for="telInput">Tel</label>
                 <input
                   name="tel"
                   type="text"

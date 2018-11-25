@@ -2,7 +2,12 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { NavLink } from "react-router-dom";
 import * as actionTypes from "../store/actions";
+import { withRouter } from "react-router-dom";
 class Navbar extends Component {
+  onLogout = () => {
+    this.props.doLogout();
+    this.props.history.push("/");
+  };
   render() {
     let rightMenu = null;
     if (this.props.reduxState.isLogin) {
@@ -14,7 +19,7 @@ class Navbar extends Component {
             </a>
           </li>
           <li className="nav-item">
-            <a className="nav-link" onClick={this.props.doLogout}>
+            <a className="nav-link" onClick={this.onLogout}>
               Logout
             </a>
           </li>
@@ -52,6 +57,30 @@ class Navbar extends Component {
         </li>
       );
     }
+    let profile = null;
+    if (
+      this.props.reduxState.role === "seller" ||
+      this.props.reduxState.role === "customer"
+    ) {
+      profile = (
+        <li className="nav-item">
+          <NavLink className="nav-link" exact to="/profile">
+            Profile
+          </NavLink>
+        </li>
+      );
+    }
+    let cart = null;
+    if (this.props.reduxState.role === "customer") {
+      cart = (
+        <li className="nav-item">
+          <NavLink className="nav-link" exact to="/cart">
+            Cart
+          </NavLink>
+        </li>
+      );
+    }
+
     return (
       <nav className="navbar navbar-expand-lg navbar-light bg-light">
         <a className="navbar-brand" href="#">
@@ -76,21 +105,14 @@ class Navbar extends Component {
                 Home
               </NavLink>
             </li>
-            <li className="nav-item">
-              <a className="nav-link" href="#">
-                Profile
-              </a>
-            </li>
-            <li className="nav-item">
-              <NavLink className="nav-link" exact to="/cart">
-                Cart
-              </NavLink>
-            </li>
-            <li className="nav-item">
+            {profile}
+            {cart}
+
+            {/* <li className="nav-item">
               <a className="nav-link" href="#">
                 Wallet
               </a>
-            </li>
+            </li> */}
             {newProductMenu}
           </ul>
           <ul className="navbar-nav mr-right">{rightMenu}</ul>
@@ -112,7 +134,9 @@ const mapDispatchToProps = dispatch => {
   };
 };
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(Navbar);
+export default withRouter(
+  connect(
+    mapStateToProps,
+    mapDispatchToProps
+  )(Navbar)
+);
