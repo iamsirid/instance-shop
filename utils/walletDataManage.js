@@ -13,7 +13,7 @@ module.exports = {
       });
     };
 
-    let sql = "INSERT INTO wallet SET value = 0";
+    let sql = "INSERT INTO wallet SET value = 1000000";
     db.query(sql, (err, result) => {
       if (err) {
         console.log(err);
