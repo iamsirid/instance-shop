@@ -82,14 +82,14 @@ class ProductItem extends Component {
                 <a href="#">{this.state.productData.name}</a>
               </h4>
 
-              <span>Status: </span>
+              {/* <span>Status: </span>
               <span className="text-success">
                 <strong>
                   {this.state.productData.stock >= 0
                     ? "In Stock"
                     : "Out of stock"}
                 </strong>
-              </span>
+              </span> */}
             </div>
           </div>
         </td>
